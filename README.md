@@ -127,27 +127,9 @@ sudo python3 neteye.py -s 192.168.1.0/24 --timeout 1.0 --ping-timeout 2.0
 
 NetEye follows a systematic pipeline. The diagram below illustrates the process:
 
-```mermaid
-graph TD
-    A[Start] --> B[Auto-detect / parse subnet]
-    B --> C[Generate IP list (exclude self)]
-    C --> D{--no-ping?}
-    D -->|No| E[ARP/NDP/ping host discovery]
-    D -->|Yes| F[Skip discovery]
-    E --> G[For each alive IP]
-    F --> G
-    G --> H[Concurrent port scan]
-    H --> I{Open ports?}
-    I -->|No| J[Skip]
-    I -->|Yes| K[Get MAC / OUI]
-    K --> L[HTTP fingerprint]
-    L --> M[Classify device]
-    M --> N[Brute-force credentials]
-    N --> O[Collect results]
-    O --> P[Progress update]
-    P --> Q{More IPs?}
-    Q -->|Yes| G
-    Q -->|No| R[Print & export]
+```
+<img width="1318" height="5999" alt="deepseek_mermaid_20260908_9509c5" src="https://github.com/user-attachments/assets/dc341936-14d3-4d4b-81f4-f2574382bb33" />
+
 ```
 
 > *If the diagram does not render on GitHub, the Mermaid syntax is valid – ensure your browser supports it.*
