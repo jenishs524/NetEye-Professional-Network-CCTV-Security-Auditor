@@ -127,12 +127,10 @@ sudo python3 neteye.py -s 192.168.1.0/24 --timeout 1.0 --ping-timeout 2.0
 
 NetEye follows a systematic pipeline. The diagram below illustrates the process:
 
-```
+
 <img width="1318" height="5999" alt="deepseek_mermaid_20260908_9509c5" src="https://github.com/user-attachments/assets/dc341936-14d3-4d4b-81f4-f2574382bb33" />
 
 ```
-
-> *If the diagram does not render on GitHub, the Mermaid syntax is valid – ensure your browser supports it.*
 
 ### Simplified Textual Workflow
 
