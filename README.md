@@ -1,4 +1,3 @@
-```markdown
 # 🕵️ NetEye – Advanced Network Intelligence & Security Auditing Framework
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -44,10 +43,10 @@ Whether you’re hardening your own network, conducting a penetration test, or r
 
 *(Replace these placeholders with your own images)*
 
-![Scan in progress](screenshots/scanning.png)
+![Scan in progress](screenshots/scanning.png)  
 *Figure 1: Live scan showing progress and discovered devices.*
 
-![Results](screenshots/results.png)
+![Results](screenshots/results.png)  
 *Figure 2: Detailed results with credentials found.*
 
 ---
@@ -65,10 +64,12 @@ Whether you’re hardening your own network, conducting a penetration test, or r
 ```bash
 sudo apt update && sudo apt install libpcap-dev snmp -y
 ```
+
 **macOS (Homebrew):**
 ```bash
 brew install libpcap snmp
 ```
+
 **Windows:** Install [Npcap](https://npcap.com/) and ensure `snmpget` is in your PATH.
 
 ### Step 2 – Clone & Install
@@ -124,6 +125,8 @@ sudo python3 neteye.py -s 192.168.1.0/24 --timeout 1.0 --ping-timeout 2.0
 
 ## 🔄 Workflow
 
+NetEye follows a systematic pipeline. The diagram below illustrates the process:
+
 ```mermaid
 graph TD
     A[Start] --> B[Auto-detect / parse subnet]
@@ -133,24 +136,36 @@ graph TD
     D -->|Yes| F[Skip discovery]
     E --> G[For each alive IP]
     F --> G
-    G --> H[Concurrent port scan (21 ports)]
+    G --> H[Concurrent port scan]
     H --> I{Open ports?}
     I -->|No| J[Skip]
-    I -->|Yes| K[Get MAC via ARP/NDP]
-    K --> L[OUI vendor lookup]
-    L --> M[HTTP fingerprint (if web port open)]
-    M --> N[Classify device type]
-    N --> O[Brute-force default credentials]
-    O --> P[Collect results]
-    P --> Q[Update progress]
-    Q --> R{More IPs?}
-    R -->|Yes| G
-    R -->|No| S[Print results]
-    S --> T[Export CSV / JSON]
-    T --> U[End]
+    I -->|Yes| K[Get MAC / OUI]
+    K --> L[HTTP fingerprint]
+    L --> M[Classify device]
+    M --> N[Brute-force credentials]
+    N --> O[Collect results]
+    O --> P[Progress update]
+    P --> Q{More IPs?}
+    Q -->|Yes| G
+    Q -->|No| R[Print & export]
 ```
 
-> *If the diagram does not render on GitHub, view the raw markdown – the Mermaid syntax is correct.*
+> *If the diagram does not render on GitHub, the Mermaid syntax is valid – ensure your browser supports it.*
+
+### Simplified Textual Workflow
+
+1. **Start** → auto‑detect or parse subnet.  
+2. **Generate IP list** – exclude your own IPs.  
+3. **Host discovery** – ARP/NDP/ICMP (or skip with `--no-ping`).  
+4. **For each alive IP** – concurrent port scan (21 pre‑defined ports).  
+5. **If ports are open**:  
+   - Retrieve MAC address and vendor via OUI.  
+   - Fingerprint HTTP (if web port is open).  
+   - Classify device (CCTV, Router, PC, etc.).  
+   - Brute‑force default credentials on open services.  
+6. **Collect and store** results.  
+7. **Update progress bar** and continue until all IPs are processed.  
+8. **Print results** in a formatted table and export to CSV/JSON.
 
 ---
 
@@ -271,4 +286,3 @@ This project is licensed under the **MIT License** – see the [LICENSE](LICENSE
 
 **Happy Auditing!**  
 *Remember – with great power comes great responsibility.*
-```
