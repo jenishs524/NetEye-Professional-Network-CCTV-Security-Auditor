@@ -1,3 +1,4 @@
+```markdown
 # NetEye – Professional Network & CCTV Security Auditor
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -10,25 +11,23 @@ Whether you are conducting a routine security assessment or responding to an inc
 
 ---
 
-## 🚀 Key Features
+## ✨ Features
 
-| Feature | Description |
-|---------|-------------|
-| **🌐 Dual‑stack scanning** | Supports both IPv4 and IPv6 networks out‑of‑the‑box. |
-| **📡 Smart host discovery** | Uses ARP (IPv4) / Neighbor Discovery (IPv6) with fallback to ICMP ping. Disable with `--no-ping` for stealth‑mode scanning. |
-| **🔌 Comprehensive port scanning** | Scans a curated list of 21 common CCTV, router, and management ports (80, 443, 554, 8080, 37777, 8000, 7000, 8554, 81, 88, 8899, 23, 22, 21, 161, 1900, 5000, 5001, 8081, 8443, 9000, 9090). |
-| **🖥️ MAC OUI resolution** | Instantly identifies device vendors from MAC prefixes (over 150+ entries – Hikvision, Dahua, Cisco, TP‑Link, Huawei, etc.). |
-| **🔎 HTTP/HTTPS fingerprinting** | Extracts page titles, model numbers, and manufacturer strings from web interfaces. |
-| **🏷️ Intelligent classification** | Automatically labels each device as **CCTV**, **Router**, **PC/Server**, **Telnet device**, or **Unknown** based on open ports and fingerprint data. |
-| **🔑 Default credential brute‑force** | Tests hundreds of factory‑default username/password combinations for: |
-| | – HTTP Basic, Digest, and Form‑based authentication |
-| | – SSH (using Paramiko) |
-| | – Telnet |
-| | – FTP |
-| | – SNMP (community strings: `public`, `private`, `admin`, etc.) |
-| **📊 Export capabilities** | Save results to **CSV** and **JSON** for further analysis or integration. |
-| **📝 Detailed logging** | Every action is logged to a timestamped file – perfect for audit trails. |
-| **🎨 Colourful console output** | Professional banner, progress bar, and colour‑coded results for easy reading. |
+- 🌐 **Dual‑stack scanning** – supports both IPv4 and IPv6 out‑of‑the‑box.
+- 📡 **Smart host discovery** – uses ARP (IPv4) / Neighbor Discovery (IPv6) with fallback to ICMP ping. Disable with `--no-ping` for stealth‑mode scanning.
+- 🔌 **Comprehensive port scanning** – scans a curated list of 21 common CCTV, router, and management ports (80, 443, 554, 8080, 37777, 8000, 7000, 8554, 81, 88, 8899, 23, 22, 21, 161, 1900, 5000, 5001, 8081, 8443, 9000, 9090).
+- 🖥️ **MAC OUI resolution** – instantly identifies device vendors from MAC prefixes (over 150+ entries – Hikvision, Dahua, Cisco, TP‑Link, Huawei, etc.).
+- 🔎 **HTTP/HTTPS fingerprinting** – extracts page titles, model numbers, and manufacturer strings from web interfaces.
+- 🏷️ **Intelligent classification** – automatically labels each device as **CCTV**, **Router**, **PC/Server**, **Telnet device**, or **Unknown** based on open ports and fingerprint data.
+- 🔑 **Default credential brute‑force** – tests hundreds of factory‑default username/password combinations for:
+  - HTTP Basic, Digest, and Form‑based authentication
+  - SSH (using Paramiko)
+  - Telnet
+  - FTP
+  - SNMP (community strings: `public`, `private`, `admin`, etc.)
+- 📊 **Export capabilities** – save results to **CSV** and **JSON** for further analysis or integration.
+- 📝 **Detailed logging** – every action is logged to a timestamped file – perfect for audit trails.
+- 🎨 **Colourful console output** – professional banner, progress bar, and colour‑coded results for easy reading.
 
 ---
 
@@ -55,14 +54,12 @@ Whether you are conducting a routine security assessment or responding to an inc
 ### Step 1 – Install system dependencies
 
 On **Debian/Ubuntu**:
-
 ```bash
 sudo apt update
 sudo apt install libpcap-dev snmp -y
 ```
 
 On **macOS** (Homebrew):
-
 ```bash
 brew install libpcap snmp
 ```
@@ -83,7 +80,6 @@ pip install -r requirements.txt
 ```
 
 **`requirements.txt`** content:
-
 ```
 netifaces
 requests
@@ -96,25 +92,21 @@ scapy
 ## 🚀 Usage
 
 ### Basic usage (auto‑detect subnet)
-
 ```bash
 sudo python3 neteye.py
 ```
 
 ### Recommended advanced usage (skip host discovery, verbose, export)
-
 ```bash
 sudo python3 neteye.py --no-ping -v -t 100 -o results.csv --json results.json
 ```
 
 ### Specify a custom subnet
-
 ```bash
 sudo python3 neteye.py -s 192.168.1.0/24
 ```
 
 ### Increase port scan timeout (for slower networks)
-
 ```bash
 sudo python3 neteye.py --timeout 1.0
 ```
@@ -139,11 +131,11 @@ sudo python3 neteye.py --timeout 1.0
 
 ## 🔄 Workflow (How It Works)
 
-NetEye follows a systematic pipeline to deliver comprehensive results. The diagram below illustrates the process:
+NetEye follows a systematic pipeline. The diagram below illustrates the process:
 
 ```mermaid
 graph TD
-    A[Start] --> B[Auto‑detect / parse subnet]
+    A[Start] --> B[Auto-detect / parse subnet]
     B --> C[Generate list of IPs (exclude own)]
     C --> D{--no-ping?}
     D -->|No| E[Perform ARP/NDP/ping host discovery]
@@ -152,12 +144,12 @@ graph TD
     F --> G
     G --> H[Concurrent port scan (21 CCTV + common ports)]
     H --> I{Open ports found?}
-    I -->|No| J[Skip]
+    I -->|No| J[Skip this IP]
     I -->|Yes| K[Retrieve MAC address (ARP cache / NDP)]
     K --> L[Resolve MAC vendor via OUI database]
     L --> M[HTTP fingerprinting (if port 80/443 open)]
-    M --> N[Classify device type based on ports + vendor + HTTP info]
-    N --> O[Brute‑force default credentials on open services]
+    M --> N[Classify device type based on ports, vendor, HTTP info]
+    N --> O[Brute-force default credentials on open services]
     O --> P[Collect results: IP, MAC, hostname, type, ports, credentials]
     P --> Q[Update progress bar]
     Q --> R{More IPs?}
